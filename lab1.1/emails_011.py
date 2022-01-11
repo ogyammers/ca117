@@ -14,5 +14,4 @@ def email(s):
 
 for line in sys.stdin:
    s = line.strip()
-   name = email(s)
-   print(" ".join(name))
+   print(" ".join(email(s)))

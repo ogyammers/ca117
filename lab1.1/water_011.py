@@ -10,13 +10,11 @@ buckets = list(map(int, lines[1].split()))
 count = 0
 
 i = 0
-while count < n + 1 and i < len(buckets):
+while i < len(buckets) and count <= n:
    count = count + buckets[i]
    i = i + 1
 
-if count < n:
+if sum(buckets) < n:
    print(len(buckets))
-elif count == i:
-   print(count)
 else:
    print(i - 1)

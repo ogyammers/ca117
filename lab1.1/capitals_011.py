@@ -2,15 +2,15 @@
 
 import sys
 
-def capital(s):
+def capitalize(s):
    if len(s) > 1:
-      return s[0].capitalize() + s[1:len(s) - 1] + s[-1].capitalize()
+      return s[0].upper() + s[1:-1] + s[-1].upper()
    else:
       return s
 
 
 for line in sys.stdin:
    s = line.strip()
-   caps = capital(s)
+   caps = capitalize(s)
    if len(caps) > 1:
       print(caps)

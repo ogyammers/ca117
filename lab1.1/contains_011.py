@@ -15,5 +15,4 @@ def contain(s):
 
 for line in sys.stdin:
    s = line.strip()
-   cont = contain(s)
-   print(cont)
+   print(contain(s))

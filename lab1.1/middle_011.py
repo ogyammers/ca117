@@ -3,7 +3,7 @@
 import sys
 
 def middle(s):
-   if len(s) // 2 != len(s) / 2:
+   if len(s) % 2 == 1:
       return s[len(s) // 2:(len(s) // 2) + 1]
    else:
       return "No middle character!"
@@ -11,5 +11,4 @@ def middle(s):
 
 for line in sys.stdin:
    s = line.strip()
-   mid = middle(s)
-   print(mid)
+   print(middle(s))
