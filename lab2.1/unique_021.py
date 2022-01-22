@@ -4,9 +4,9 @@ import sys
 import string
 
 def punctuation(s):
-   for i in s:
-      if i in string.punctuation:
-         s = s.replace(i, "")
+   for c in s:
+      if c in string.punctuation:
+         s = s.replace(c, "")
    return s.lower().split()
 
 
@@ -18,6 +18,4 @@ def count(s):
    return len(output)
 
 
-words = sys.stdin.read()
-words = (punctuation(words))
-print(count(words))
+print(count(punctuation(sys.stdin.read())))

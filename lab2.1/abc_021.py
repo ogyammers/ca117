@@ -2,12 +2,10 @@
 
 import sys
 
+nums, order = sys.stdin.readlines()
+nums = list(map(int, nums.split()))
+nums.sort()
 
-[numbers, order] = sys.stdin.readlines()
-numbers = numbers.split()
-numbers = list(map(int, numbers))
-numbers.sort()
+d = {"A": nums[0], "B": nums[1], "C": nums[2]}
 
-dic = {"A": numbers[0], "B": numbers[1], "C": numbers[2]}
-
-print(dic[order[0]], dic[order[1]], dic[order[2]])
+print(d[order[0]], d[order[1]], d[order[2]])
