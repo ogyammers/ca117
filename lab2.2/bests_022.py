@@ -4,28 +4,18 @@ import sys
 
 filename = sys.argv[1]
 
-highest = 0
-
 try:
-   with open(filename, "r") as f:
-
+   with open(filename, 'r') as f:
+      best_mark = 0
       for line in f:
+         [mark, student] = line.strip().split(' ', 1)
          try:
-            if int(line.split()[0]) > highest:
-               highest = int(line.split()[0])
-               mark = line.split()[0]
+            if int(mark) > best_mark:
+               best_mark, best_student = int(mark), [student]
+            elif int(mark) == best_mark:
+               best_student.append(student)
          except ValueError:
-            print(f'Invalid mark {line.split()[0]} encountered. Skipping.')
-
+            print(f'Invalid mark {mark} encountered. Skipping.')
+      print(f'Best student(s): {", ".join(best_student)}\nBest mark: {best_mark}')
 except FileNotFoundError:
    print(f'The file {filename} does not exist.')
-
-student = []
-
-with open(filename, "r") as f:
-   for line in f:
-      if int(line.split()[0]) == int(mark):
-         student.append(" ".join(line.split()[1:]))
-
-print("Best student(s):", ", ".join(student))
-print("Best mark:", mark)

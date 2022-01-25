@@ -2,17 +2,10 @@
 
 import sys
 
-afile = sys.argv[1]
-bfile = sys.argv[2]
-
-with open(afile, "r") as f:
+with open(sys.argv[1], "r") as f:
    anums = f.readlines()
-
-with open(bfile, "r") as g:
+with open(sys.argv[2], "r") as g:
    bnums = g.readlines()
 
-i = 0
-while i < len(anums):
-   print(anums[i].strip())
-   print(bnums[i].strip())
-   i = i + 1
+for i in range(len(anums)):
+   print(f'{anums[i].strip()}\n{bnums[i].strip()}')
