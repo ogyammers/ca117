@@ -22,10 +22,8 @@ def multiples_3_and_4(numbers):
    return [n for n in numbers if not (n % 4) and not (n % 3)]
 
 
-lines = sys.stdin.readlines()
-
-for n in lines:
-   numbers = [i for i in range(1, int(n) + 1)]
+for line in sys.stdin:
+   numbers = [i for i in range(1, int(line) + 1)]
 
    print(f'Multiples of 3: {multiples_3(numbers)}')
    print(f'Multiples of 3 squared: {multiples_3_squared(numbers)}')
