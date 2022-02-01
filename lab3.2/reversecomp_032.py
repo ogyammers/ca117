@@ -3,8 +3,6 @@
 import sys
 
 def binsearch(query, lines):
-   if len(query) < 5:
-      return False
    low = 0
    high = len(lines) - 1
    while low <= high:
@@ -18,7 +16,7 @@ def binsearch(query, lines):
    return False
 
 
-lines = [line.strip() for line in sys.stdin]
+lines = [line.strip() for line in sys.stdin if len(line.strip()) > 4]
 low = [line.lower() for line in lines]
 
 print([line for line in lines if binsearch(line[::-1].lower(), low)])
