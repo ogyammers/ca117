@@ -8,16 +8,15 @@ def lookup(name):
    return 'No such contact'
 
 
-phonebook = {}
-names = [line.strip() for line in sys.stdin]
-
 with open(sys.argv[1], 'r') as f:
    contacts = [line.strip() for line in f]
+   phonebook = {}
    for line in contacts:
       k = line.split()[0]
       v = line.split()[1:]
       phonebook[k] = v
 
+names = [line.strip() for line in sys.stdin]
+
 for name in names:
-   print(f'Name: {name}')
-   print(lookup(name))
+   print(f'Name: {name}\n{lookup(name)}')
