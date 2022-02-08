@@ -3,16 +3,20 @@
 import sys
 
 lines = [line.strip().lower() for line in sys.stdin]
-alpha = 'abcdefghijklmnopqrstuvwyxz'
-
 
 def pangram(line):
+   alpha = 'abcdefghijklmnopqrstuvwyxz'
    if (set(alpha) & set(line)) == set(alpha):
       return 'pangram'
-   else:
-      missing = ''.join(sorted(set(alpha) - set(line)))
-      return (f'missing {missing}')
+
+   missing = ''.join(sorted(set(alpha) - set(line)))
+   return (f'missing {missing}')
 
 
-for line in lines:
-   print(pangram(line))
+def main():
+   for line in lines:
+      print(pangram(line))
+
+
+if __name__ == '__main__':
+   main()

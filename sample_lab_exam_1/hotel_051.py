@@ -2,12 +2,18 @@
 
 import sys
 
-line = sys.stdin.readline()
-rooms, occupied = line[0], line[1:]
+def hotel(line):
+   rooms, occupied = line[0], line[1:]   
+   available = [i for i in range(1, int(rooms)) if str(i) not in occupied]
+   
+   if available == []:
+      return 'no room'
+   
+   return sorted(available)[0]
 
-available = [i for i in range(1, int(rooms)) if str(i) not in occupied]
+def main():
+   print(hotel(sys.stdin.readline()))
 
-if available == []:
-   print('no room')
-else:
-   print(sorted(available)[0])
+if __name__ == '__main__':
+   main()
+
