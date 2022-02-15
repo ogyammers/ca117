@@ -5,7 +5,7 @@ import sys
 lines = [line.strip().split() for line in sys.stdin]
 
 def values(item):
-   return item[1]
+   return item[0]
 
 def scores(lines):
    scorecard = {}
