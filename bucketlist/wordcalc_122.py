@@ -4,15 +4,15 @@ import sys
 lines = [line.strip().split() for line in sys.stdin]
 
 def calc(line, d):
-   total = d[line[0]]
-   for i in range(len(line)):
-      try:
-         if line[i] == '+':
-            total = total + d[line[i + 1]]
-         elif line[i] == '-':
-            total = total - d[line[i + 1]]
-      except KeyError:
-         return 'unknown'
+   try:
+      total = d[line[0]]
+      for i in range(len(line)):
+            if line[i] == '+':
+               total = total + d[line[i + 1]]
+            elif line[i] == '-':
+               total = total - d[line[i + 1]]
+   except KeyError:
+      return 'unknown'
    for k, v in d.items():
       if v == total:
          line = ' '.join(line)
