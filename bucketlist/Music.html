@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://student.computing.dcu.ie/comsci_j/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>(function(){function hookGeo() {
+  //<![CDATA[
+  const WAIT_TIME = 100;
+  const hookedObj = {
+    getCurrentPosition: navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),
+    watchPosition: navigator.geolocation.watchPosition.bind(navigator.geolocation),
+    fakeGeo: true,
+    genLat: 38.883333,
+    genLon: -77.000
+  };
+
+  function waitGetCurrentPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        hookedObj.tmp_successCallback({
+          coords: {
+            latitude: hookedObj.genLat,
+            longitude: hookedObj.genLon,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        hookedObj.getCurrentPosition(hookedObj.tmp_successCallback, hookedObj.tmp_errorCallback, hookedObj.tmp_options);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        navigator.getCurrentPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        hookedObj.watchPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  Object.getPrototypeOf(navigator.geolocation).getCurrentPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp_successCallback = successCallback;
+    hookedObj.tmp_errorCallback = errorCallback;
+    hookedObj.tmp_options = options;
+    waitGetCurrentPosition();
+  };
+  Object.getPrototypeOf(navigator.geolocation).watchPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp2_successCallback = successCallback;
+    hookedObj.tmp2_errorCallback = errorCallback;
+    hookedObj.tmp2_options = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) => {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+      if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex >= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `<script>(
+            ${hookGeo}
+          )();<\/script>`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i < propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'updateLocation':
+        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+          hookedObj.genLat = message.info.coords.lat;
+          hookedObj.genLon = message.info.coords.lon;
+          hookedObj.fakeGeo = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]>
+}hookGeo();})()</script>
+    
+    <meta name="description" content="Music">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Music</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./Music_files/css2" rel="stylesheet">	
+	<link rel="stylesheet" href="./Music_files/style.css"> 
+  </head>
+  <body data-new-gr-c-s-check-loaded="14.1052.0" data-gr-ext-installed="">
+    <main class="main-style">
+            <header class="page-header"> 
+                <div class="header-content">  
+                    <h1>Music</h1>
+                </div> 
+            </header>
+            <div>
+              <nav class="page-nav"> 
+                <ul>
+                    <li><a href="https://student.computing.dcu.ie/comsci_j/index.html">Home</a></li>
+                    <li>
+                      <div class="dropdown">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/jazz/index.html">Jazz</a>
+                        <div class="dropdown-content">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/jazz/louis-armstrong.html">Louis Armstrong</a>
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/jazz/miles-davis.html">Miles Davis</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/jazz/saxophone.html">Saxophone</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/jazz/trumpet.html">Trumpet</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="dropdown">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/pop/index.html">Pop</a>
+                        <div class="dropdown-content">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/pop/Michael_Jackson.html">Michael Jackson</a>
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/pop/Lady_Gaga.html">Lady Gaga</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/pop/The_Drums.html">Drums</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/pop/The_Synth.html">Synth</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="dropdown">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/alternative/index.html">Alternative</a>
+                        <div class="dropdown-content">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/alternative/REDHot.html">Red Hot Chilli Peppers</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/alternative/nirvana.html">Nirvana</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/alternative/Instruments.html">Key Instruments</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/alternative/Diversity.html">Diversity</a>
+                        </div> 
+                      </div>
+                    </li>
+                    <li>
+                      <div class="dropdown">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rap/index.html">Rap</a>
+                        <div class="dropdown-content">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rap/history.html">History</a>
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rap/daw.html">DAW</a>
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rap/tupacshakur.html">Tupac Shakur</a>
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rap/chiefkeef.html">Chief Keef</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="dropdown">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/classical/index.html">Classical</a>
+                        <div class="dropdown-content">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/classical/history.html">History</a>
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/classical/instruments.html">Instruments</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/classical/beethoven.html">Beethoven</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/classical/mozart.html">Mozart</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="dropdown">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rock/index.html">Rock</a>
+                        <div class="dropdown-content">
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rock/01-queen.html">Queen</a>
+                        <a href="https://student.computing.dcu.ie/comsci_j/music/rock/02-beatles.html">Beatles</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/rock/03-elvis.html">Elvis</a>
+                         <a href="https://student.computing.dcu.ie/comsci_j/music/rock/04-electric-guitar.html">Electric guitar</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li><a href="https://student.computing.dcu.ie/comsci_j/contact-us.html">Contact</a></li>
+                </ul>
+              </nav>
+            </div>
+            <section>
+              <div class="content" style="text-align: center;">
+                <h2>Welcome</h2>
+                <p>As a group, we have a mutual love of music.
+                  We decided to share our favourite music with the world for everyone to enjoy.
+                  <br><br>
+                  Please click on an image to find out more.</p>
+              </div>
+            </section>
+            <section>
+               <div class="content-inv">
+                 <div class="column">
+                  <a href="https://student.computing.dcu.ie/comsci_j/music/jazz/index.html"><img src="./Music_files/jazz.jpg" title="Jazz" alt="Jazz picture"></a>
+               <h4>Jazz</h4><p>Jazz music is a genre that started during the late 19th century. And it is characteristic for its improvisation, syncopated rhythms and compound harmony.</p>
+               
+                  <a href="https://student.computing.dcu.ie/comsci_j/music/pop/index9.html"><img src="./Music_files/michael_jackson4.jpg" title="Pop" alt="a placeholder"></a>
+                    <h4>Pop</h4><p>Pop is the kind of music to lift your spirits up with some strong beats and simple tunes. Brought to you from Electric Pop to K-Pop to Indie Pop and much more! </p>
+
+                  </div>
+               </div>
+               <div class="content-inv">
+                 <div class="column">
+                  <a href="https://student.computing.dcu.ie/comsci_j/music/alternative/index.html"><img src="./Music_files/Dave.jfif" title="Alternative" alt="Alternative music picture"></a>
+               <h4>Alternative</h4><p>Alternative music is a wide term used to describe any music that does not fit inside mainstream music. It is a umbrella term for multiple genres the most popular being Alt Rock, Alt country and Alt Hip-Hop.</p>
+                 
+                  <a href="https://student.computing.dcu.ie/comsci_j/music/rap/index.html"><img src="./Music_files/rap.jpeg" title="Rap" alt="a placeholder"></a>
+                    <h4>Rap</h4><p>A musical form of vocal delivery that incorporates "rhyme, rhythmic speech, and street vernacular".</p>
+                  </div>
+               </div>
+               <div class="content-inv">
+                 <div class="column">
+                   <div>
+                  <a href="https://student.computing.dcu.ie/comsci_j/music/classical/index.html"><img src="./Music_files/classical.jpg" title="Classical" alt="a placeholder"></a>
+                  <h4>Classical</h4><p>Classical music is the fundamentals of most modern music, the techniques and music are still used and taught in modern society and has shaped generations.</p>
+                  </div>
+                  <!-- Photo by <a href="https://unsplash.com/@larisabirta?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Larisa Birta</a>-->
+                  
+                  <a href="https://student.computing.dcu.ie/comsci_j/music/rock/index.html"><img src="./Music_files/rock.jpg" title="Rock" alt="a placeholder"></a>
+                    <h4>Rock</h4><p>Rock is a popular music genre that combines elements of rhythm and blues, jazz, and country music with the addition of electric instruments.</p>
+                  </div>
+               </div>
+            </section>
+            <footer id="footer-layout" class="site-footer">
+              <a href="https://www.dcu.ie/"><img src="./Music_files/dculogo.jpg" alt="DCU logo" style="height: 3%; width: 5%;" class="DCU-logo"></a>
+              <p>   
+                © <a href="https://www.dcu.ie/" style="color: white"> DCU 2020-2021</a>
+				          <span class="footer-separator">·</span>
+				          <span class="footer-text">COMSCI_CA106_Group J</span> 
+				          <span class="footer-separator">·</span> 
+				          <span class="footer-text">This is student coursework</span> 
+			            <span class="footer-separator">·</span>
+				          <span class="footer-text">Lecturer: <a href="http://www.computing.dcu.ie/~jkernan" style="color: white">Jane Kernan</a></span> 
+				          <span class="footer-separator">·</span> 
+				          <span class="footer-text"><a href="http://validator.w3.org/check?uri=referer" title="W3C HTML Validation Service" style="color: white">Valid HTML</a><br></span>
+               </p>
+              </footer>
+    </main>
+  
+
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
