@@ -30,10 +30,10 @@ class DFSPaths(object):
         return self.visited[v]
 
     def pathTo(self, v):
-        if not self.visited[v]:
+        if not self.hasPathTo(v):
             return None
-        output = [v]
+        path = [v]
         while v != self.s:
+            path.insert(0, self.parent[v])
             v = self.parent[v]
-            output.insert(0, v)
-        return output
+        return path
