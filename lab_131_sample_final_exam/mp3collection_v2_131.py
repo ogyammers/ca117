@@ -26,8 +26,4 @@ class MP3Collection(object):
          del self.d[title]
 
    def get_mp3s_by_artist(self, name):
-      tracklist = []
-      for mp3 in self.d.values():
-         if name in mp3.artist:
-            tracklist.append(mp3)
-      return tracklist
+      return [mp3 for mp3 in self.d.values() if name in mp3.artist]
