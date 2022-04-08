@@ -1,6 +1,6 @@
-sc-ap-
+------
 scrape
-sprat
-stray
-splat
+sprats
+strays
+splats
 sprats

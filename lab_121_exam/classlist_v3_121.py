@@ -18,6 +18,9 @@ class Student(object):
 def sorter(value):
    return value.cao
 
+def sort_on(item):
+   return item[1]
+
 def popular():
    return Student.subjects
 
@@ -48,7 +51,8 @@ class Classlist(object):
             most[s] = most[s] + 1
          else:
             most[s] = 1
-      return min(most)
+      most = sorted(most.items(), key=sort_on)
+      return most[-1][0]
 
    def __str__(self):
       cao_order = [f'{v}' for v in sorted(self.d.values(), key=sorter)]

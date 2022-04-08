@@ -10,7 +10,7 @@ def main():
     s1.add_grade('english', 'H1')
     s1.add_grade('irish', 'O4')
 
-    s2.add_grade('english', 'H2')
+    s2.add_grade('irish', 'H2')
     s2.add_grade('french', 'O5')
     s2.add_grade('spanish', 'O1')
 
