@@ -25,4 +25,5 @@ class Fleet(object):
       return None
 
    def get_drivers_by_category(self, cat):
-      return len([v for v in self.d.values() if cat in v.cat])
+      drivers = [len(v.drivers) for v in self.d.values() if cat in v.cat]
+      return 0 if drivers == [] else max(drivers)
